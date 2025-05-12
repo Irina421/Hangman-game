@@ -13,7 +13,9 @@ Funcționalități
 
 - Afișarea unui mesaj de câștig sau pierdere în funcție de rezultat.
 
+
 Descrierea codului
+
 1. Clasa Cuvant
 
 Aceasta este clasa care se ocupă cu gestionarea cuvântului secret. Ea are:

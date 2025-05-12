@@ -1,0 +1,202 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cstdlib>
+#include <ctime>
+#include <algorithm>
+
+class Cuvant {
+private:
+    std::string cuvant_original;
+    std::vector<char> litere_org;
+    std::vector<char> linii;
+
+public:
+    Cuvant(std::string c) {
+        cuvant_original = c;
+        
+        for (char ch : c) {
+            litere_org.push_back(ch);
+            linii.push_back('-');
+        }
+    }
+
+    void actualizeaza_cuvant(char litera) {
+        for (int i = 0; i < litere_org.size(); i++) {
+            if (litere_org[i] == litera) {
+                linii[i] = litera;
+            }
+        }
+        for(int i=0; i<linii.size(); i++) {
+            std::cout << linii[i] << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    bool este_corect(char litera) {
+        return std::find(litere_org.begin(), litere_org.end(), litera) != litere_org.end();
+    }
+
+    bool este_complet() {
+        return linii == litere_org;
+    }
+    
+    std::vector<char> get_linii() { return linii; }
+    std::string get_cuvant_original() const { return cuvant_original; }
+
+};
+
+class Om {
+private:
+    int nr_erori = 0;
+    std::vector<std::string> desene;
+
+public:
+    Om() {
+        desene.push_back(R"(
+   -----   
+  |     |  
+        |  
+        |  
+        |  
+        |  
+ ========)");
+
+        desene.push_back(R"(
+   -----   
+  |     |  
+  O     |  
+        |  
+        |  
+        |  
+ ========)");
+
+        desene.push_back(R"(
+   -----   
+  |     |  
+  O     |  
+  |     |  
+  |     |  
+        |  
+ ========)");
+
+        desene.push_back(R"(
+   -----   
+  |     |  
+  O     |  
+  |     |  
+ /|     |  
+        |  
+ ========)");
+
+        desene.push_back(R"(
+   -----   
+  |     |  
+  O     |  
+  |     |  
+ /|\    |  
+        |  
+ ========)");
+
+        desene.push_back(R"(
+   -----   
+  |     |  
+  O     |  
+  |     |  
+ /|\    |  
+ /      |  
+ ========)");
+ 
+        desene.push_back(R"(
+   -----   
+  |     |  
+  O     |  
+  |     |  
+ /|\    |  
+ / \    |  
+ ========)");
+    }
+
+    void actualizeaza_erori() {
+        if (nr_erori < 6) {
+            nr_erori++;
+        }
+    }
+
+    int get_nr_erori() const {
+        return nr_erori;
+    }
+
+    void afiseaza_desen() const {
+        std::cout << desene[nr_erori] << std::endl;
+    }
+};
+
+int genereaza_nr_aleatoriu(int min, int max) {
+    return rand() % (max - min + 1) + min;
+}
+
+std::string genereaza_cuvant_aleatoriu() {
+    std::vector<std::string> cuvinte = {
+        "pasare", "neindemanatic", "schizofrenic", "ghepard", "transplant", "crizantema",
+        "licarire", "medalion", "fotosinteza", "radiografie", "neologism", "temperament", "coincidenta"
+    };
+    
+    return cuvinte[genereaza_nr_aleatoriu(0, cuvinte.size() - 1)];
+}
+
+class Joc {
+private:
+    Cuvant cuvant; 
+    Om om;         
+
+public:
+    Joc() : cuvant(genereaza_cuvant_aleatoriu()) {} 
+
+    void start() {
+        for (char l : cuvant.get_linii()) {
+            std::cout << l << " ";
+        }
+        std::cout << std::endl;
+        om.afiseaza_desen();
+    }
+
+    void continuare_joc() {
+        std::cout << "Introduceti o litera: ";
+        do {
+            char x;
+            std::cin >> x;
+            if (!isalpha(x)) {
+                std::cout << "Introdu o litera valida!\n";
+                continue;
+            }
+            if (cuvant.este_corect(x)) {
+                cuvant.actualizeaza_cuvant(x);
+            }
+            else {
+                om.actualizeaza_erori();
+                om.afiseaza_desen();
+            }
+        } while (om.get_nr_erori() < 6 && !cuvant.este_complet());
+        
+        if(cuvant.este_complet()) {
+            std::cout << "Ati castigat!";
+        }
+        else {
+            std::cout << "Ati pierdut!\n Cuvantul era " << cuvant.get_cuvant_original();
+
+        }
+    }
+};
+
+
+
+int main() {
+    srand(time(0));
+    
+    Joc joc;
+    joc.start();
+    joc.continuare_joc();
+    
+    return 0;
+}

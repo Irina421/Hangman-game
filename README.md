@@ -41,9 +41,10 @@ Această clasă gestionează starea omului din joc:
  - Metode pentru actualizarea erorilor și afisarea desenului corespunzător numărului de erori.
 
 3. Funcții de Utilitate
-genereaza_nr_aleatoriu(int min, int max): Generează un număr aleatoriu între un interval specificat.
+   
+- genereaza_nr_aleatoriu(int min, int max): Generează un număr aleatoriu între un interval specificat;
 
-genereaza_cuvant_aleatoriu(): Alege un cuvânt aleatoriu dintr-o listă prestabilită.
+- genereaza_cuvant_aleatoriu(): Alege un cuvânt aleatoriu dintr-o listă prestabilită.
 
 4. Clasa Joc
 
